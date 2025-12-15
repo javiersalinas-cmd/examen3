@@ -4,9 +4,7 @@ import uuid
 
 USUARIOS_DIR = "Usuarios"
 
-# -------------------------------
-# Utilidades de archivos
-# -------------------------------
+
 def asegurar_carpeta():
     if not os.path.exists(USUARIOS_DIR):
         os.makedirs(USUARIOS_DIR)
@@ -14,9 +12,7 @@ def asegurar_carpeta():
 def ruta_usuario(rut):
     return os.path.join(USUARIOS_DIR, f"{rut}.txt")
 
-# -------------------------------
-# Carga y guardado de datos
-# -------------------------------
+
 def cargar_usuario(rut):
     try:
         with open(ruta_usuario(rut), "r", encoding="utf-8") as f:
@@ -29,9 +25,6 @@ def guardar_usuario(rut, data):
     with open(ruta_usuario(rut), "w", encoding="utf-8") as f:
         f.write(str(data))
 
-# -------------------------------
-# Creación de usuario
-# -------------------------------
 def crear_usuario(rut):
     if os.path.exists(ruta_usuario(rut)):
         print("El usuario ya existe.")
@@ -51,9 +44,7 @@ def crear_usuario(rut):
     print("Usuario creado correctamente.")
     return usuario
 
-# -------------------------------
-# Cuentas bancarias
-# -------------------------------
+
 def crear_cuenta(usuario):
     tipo = input("Tipo de cuenta (vista/corriente/ahorro): ")
     numero = str(uuid.uuid4())[:8]
@@ -75,9 +66,7 @@ def seleccionar_cuenta(usuario):
 
     return input("Seleccione número de cuenta: ")
 
-# -------------------------------
-# Movimientos
-# -------------------------------
+
 def registrar_movimiento(cuenta, tipo, monto, detalle=""):
     movimiento = {
         "fecha": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
@@ -88,9 +77,7 @@ def registrar_movimiento(cuenta, tipo, monto, detalle=""):
     cuenta["movimientos"].append(movimiento)
     cuenta["movimientos"] = cuenta["movimientos"][-20:]
 
-# -------------------------------
-# Operaciones bancarias
-# -------------------------------
+
 def depositar(usuario):
     num = seleccionar_cuenta(usuario)
     if num in usuario["cuentas"]:
@@ -138,9 +125,7 @@ def ver_movimientos(usuario):
         for m in usuario["cuentas"][num]["movimientos"]:
             print(m)
 
-# -------------------------------
-# Comprobante
-# -------------------------------
+
 def generar_comprobante(rut, detalle):
     nombre = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
     archivo = f"{nombre}-{rut}.txt"
@@ -149,3 +134,4 @@ def generar_comprobante(rut, detalle):
         f.write(detalle)
 
     print(f"Comprobante generado: {archivo}")
+
