@@ -1,42 +1,34 @@
-from proyecto_supermercado.productos import productos
-from proyecto_supermercado.funciones import *
+from bank_utils import *
 
-while True:
-    print("\n🛍 MENÚ SUPERMERCADO")
-    print("1. Agregar producto")
-    print("2. Eliminar producto")
-    print("3. Modificar cantidad")
-    print("4. Ver carrito")
-    print("5. Pagar")
-    print("6. Salir")
 
-    opcion = input("Seleccione opción: ")
+def menu_usuario(usuario):
+    while True:
+        print("\n1.Crear cuenta 2.Depositar 3.Retirar 4.Transferir 5.Movimientos 6.Salir")
+        op = input("Opción: ")
 
-    if opcion == "1":
-        codigo, cantidad = leer_codigo_y_cantidad()
-        if codigo and cantidad:
-            agregar_producto(productos, codigo, cantidad)
+        if op == "1": crear_cuenta(usuario)
+        elif op == "2": depositar(usuario)
+        elif op == "3": retirar(usuario)
+        elif op == "4": transferir(usuario)
+        elif op == "5": ver_movimientos(usuario)
+        elif op == "6": break
+        else: print("Opción inválida")
 
-    elif opcion == "2":
-        codigo = int(input("Código a eliminar: "))
-        eliminar_producto(codigo)
+        guardar_usuario(usuario["rut"], usuario)
 
-    elif opcion == "3":
-        codigo = int(input("Código a modificar: "))
-        cantidad = int(input("Nueva cantidad: "))
-        modificar_cantidad(codigo, cantidad)
 
-    elif opcion == "4":
-        mostrar_carrito()
+def main():
+    asegurar_carpeta()
+    rut = input("Ingrese RUT: ")
+    usuario = cargar_usuario(rut)
 
-    elif opcion == "5":
-        total = mostrar_carrito()
-        pagar(total)
-        break
+    if not usuario:
+        crear = input("¿Crear usuario nuevo? (s/n): ").lower()
+        if crear == "s":
+            usuario = crear_usuario(rut)
 
-    elif opcion == "6":
-        print("👋 Gracias por su visita")
-        break
+    if usuario:
+        menu_usuario(usuario)
 
-    else:
-        print("❌ Opción inválida")
+if __name__ == "__main__":
+    main()
